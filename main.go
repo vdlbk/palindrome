@@ -8,16 +8,16 @@ import (
 )
 
 const (
-	K                  = 28
-	StartingNumber     = 0
-	NumberOfPalindrome = 1_000_000_000
+	StartingNumber     = 6_000_000_000_00
+	NumberOfPalindrome = 10_000_000_000_00
+	MidPoint           = 1000000
 )
 
 func main() {
 	start := time.Now()
 
-	//generatePalindromes(testPalindromicNumber, K, alphabet.SpanishAlphabets)
-	generatePalindromes(testPalindromicNumber, 27, alphabet.FrenchAlphabets)
+	generatePalindromes(testPalindromicNumber, alphabet.SpanishAlphabet)
+	//generatePalindromes(testPalindromicNumber, alphabet.InternationalAlphabet)
 
 	fmt.Println("took", time.Since(start))
 }
@@ -26,7 +26,7 @@ func testPalindromicNumber(number int, k int, alphabets [][]rune) bool {
 	return utils.IsBase10NumberAPalindromeInBaseK(number, k, alphabets)
 }
 
-func generatePalindromes(test func(number int, k int, alphabets [][]rune) bool, k int, alphabets [][]rune) {
+func generatePalindromes(test func(number int, k int, alphabets [][]rune) bool, alphabet alphabet.Alphabet) {
 	for number := StartingNumber; number <= NumberOfPalindrome; number++ {
 		temp := number
 		reversedNumber := 0
@@ -36,7 +36,7 @@ func generatePalindromes(test func(number int, k int, alphabets [][]rune) bool, 
 			reversedNumber = (reversedNumber * 10) + rem
 		}
 		if number == reversedNumber {
-			go test(number, k, alphabets)
+			go test(number, alphabet.K, alphabet.Variants)
 		}
 	}
 }

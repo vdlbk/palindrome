@@ -8,26 +8,40 @@ const (
 
 	Charset                        = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	SpanishAlphabetAlphabeticOrder = "_ABCDEFGHIJKLMNÑOPQRSTUVWXYZ"
+	SpanishAlphabetVowelEvenOrder  = "_BACDFEGHJIKLMNÑOPQRSTUVWXYZ"
 	SpanishAlphabetMostCommonOrder = "_EAOSRNIDLCTUMPBGVYQHFZJÑXKW"
 	SpanishAlphabetVowelFirstOrder = "_EAOIUNSDLCTRMPBGVYQHFZJÑXKW"
 	SpanishAlphabetOjoOrder        = "_EAFIUNSDLCTRMPBGJYQHOZVÑXKW"
 
-	FrenchAlphabetAlphabeticOrder = "_ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-	FrenchAlphabetMostCommonOrder = "_EAISNRTOLUDCMPGBVHFQYXJKWZ"
+	InternationalAlphabetAlphabeticOrder = "_ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	InternationalAlphabetMostCommonOrder = "_EAISNRTOLUDCMPGBVHFQYXJKWZ"
 )
 
 var (
-	SpanishAlphabets = [][]rune{
-		[]rune(SpanishAlphabetAlphabeticOrder),
-		[]rune(SpanishAlphabetMostCommonOrder),
-		[]rune(SpanishAlphabetVowelFirstOrder),
-		[]rune(SpanishAlphabetOjoOrder),
+	SpanishAlphabet = Alphabet{
+		K: len(SpanishAlphabetAlphabeticOrder),
+		Variants: [][]rune{
+			[]rune(SpanishAlphabetAlphabeticOrder),
+			[]rune(SpanishAlphabetVowelEvenOrder),
+			[]rune(SpanishAlphabetMostCommonOrder),
+			[]rune(SpanishAlphabetVowelFirstOrder),
+			[]rune(SpanishAlphabetOjoOrder),
+		},
 	}
-	FrenchAlphabets = [][]rune{
-		[]rune(FrenchAlphabetAlphabeticOrder),
-		[]rune(FrenchAlphabetMostCommonOrder),
+
+	InternationalAlphabet = Alphabet{
+		K: len(InternationalAlphabetAlphabeticOrder),
+		Variants: [][]rune{
+			[]rune(InternationalAlphabetAlphabeticOrder),
+			[]rune(InternationalAlphabetMostCommonOrder),
+		},
 	}
 )
+
+type Alphabet struct {
+	K        int
+	Variants [][]rune
+}
 
 func GenerateAlphabet(numberOfLetters float64) map[rune]float64 {
 	var i float64 = 0
