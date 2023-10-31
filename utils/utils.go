@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math"
 	"palindrome/alphabet"
+	"strings"
 )
 
 func ToBase10(numberBaseK string, k float64, alphabet map[rune]float64) *float64 {
@@ -62,16 +63,16 @@ func IsPalindrome(text string) bool {
 	return true
 }
 
-func IsBase10NumberAPalindromeInBaseK(numberBase10 int, K int, alphabets [][]rune) bool {
-	numberBaseK := ToBaseK(numberBase10, K)
+func IsBase10NumberAPalindromeInBaseK(numberBase10 int, currentAlphabet alphabet.Alphabet) bool {
+	numberBaseK := ToBaseK(numberBase10, currentAlphabet.K)
 	isPalindrome := IsPalindrome(numberBaseK)
 	if isPalindrome {
 		var words []string
-		for _, runes := range alphabets {
+		for _, runes := range currentAlphabet.Variants {
 			words = append(words, alphabet.MapToAlphabet(numberBaseK, runes))
 		}
 
-		fmt.Println(numberBaseK, numberBase10, words)
+		fmt.Printf("%s: | %s | %d | %s |\n", currentAlphabet.Name, numberBaseK, numberBase10, strings.Join(words, " | "))
 	}
 	return isPalindrome
 }

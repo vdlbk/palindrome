@@ -1,44 +1,55 @@
 package alphabet
 
+import "strings"
+
 const (
 	Zero         int = '0'
 	zeroFloat        = float64(Zero)
 	LetterA      int = 'A'
 	letterAFloat     = float64(LetterA)
 
-	Charset                        = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-	SpanishAlphabetAlphabeticOrder = "_ABCDEFGHIJKLMNÑOPQRSTUVWXYZ"
-	SpanishAlphabetVowelEvenOrder  = "_BACDFEGHJIKLMNÑOPQRSTUVWXYZ"
-	SpanishAlphabetMostCommonOrder = "_EAOSRNIDLCTUMPBGVYQHFZJÑXKW"
-	SpanishAlphabetVowelFirstOrder = "_EAOIUNSDLCTRMPBGVYQHFZJÑXKW"
-	SpanishAlphabetOjoOrder        = "_EAFIUNSDLCTRMPBGJYQHOZVÑXKW"
+	Charset                                 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	SpanishAlphabetAlphabeticOrder          = "_ABCDEFGHIJKLMNÑOPQRSTUVWXYZ"
+	SpanishAlphabetVowelEvenOrder           = "_BACDFEGHJIKLMNÑOPQRSTUVWXYZ"
+	SpanishAlphabetVowelOddOrder            = "_ABCDEFGHIJKLMNOÑPQRSUTVWYXZ"
+	SpanishAlphabetMostCommonOrder          = "_EAOSRNIDLCTUMPBGVYQHFZJÑXKW"
+	SpanishAlphabetVowelFirstOrder          = "_EAOIUNSDLCTRMPBGVYQHFZJÑXKW"
+	SpanishAlphabetOjoOrder                 = "_EAFIUNSDLCTRMPBGJYQHOZVÑXKW"
+	SpanishAlphabetAlphabeticOrderSpaceLast = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ_"
 
-	InternationalAlphabetAlphabeticOrder = "_ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-	InternationalAlphabetMostCommonOrder = "_EAISNRTOLUDCMPGBVHFQYXJKWZ"
+	InternationalAlphabetAlphabeticOrder          = "_ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	InternationalAlphabetMostCommonOrder          = "_EAISNRTOLUDCMPGBVHFQYXJKWZ"
+	InternationalAlphabetAlphabeticOrderSpaceLast = "ABCDEFGHIJKLMNOPQRSTUVWXYZ_"
 )
 
 var (
 	SpanishAlphabet = Alphabet{
-		K: len(SpanishAlphabetAlphabeticOrder),
+		Name: "SpanishAlphabet",
+		K:    len(strings.Split(SpanishAlphabetAlphabeticOrder, "")),
 		Variants: [][]rune{
 			[]rune(SpanishAlphabetAlphabeticOrder),
 			[]rune(SpanishAlphabetVowelEvenOrder),
+			[]rune(SpanishAlphabetVowelOddOrder),
 			[]rune(SpanishAlphabetMostCommonOrder),
 			[]rune(SpanishAlphabetVowelFirstOrder),
 			[]rune(SpanishAlphabetOjoOrder),
+			[]rune(SpanishAlphabetAlphabeticOrderSpaceLast),
 		},
 	}
 
 	InternationalAlphabet = Alphabet{
-		K: len(InternationalAlphabetAlphabeticOrder),
+		Name: "InternationalAlphabet",
+		K:    len(strings.Split(InternationalAlphabetAlphabeticOrder, "")),
 		Variants: [][]rune{
 			[]rune(InternationalAlphabetAlphabeticOrder),
 			[]rune(InternationalAlphabetMostCommonOrder),
+			[]rune(InternationalAlphabetAlphabeticOrderSpaceLast),
 		},
 	}
 )
 
 type Alphabet struct {
+	Name     string
 	K        int
 	Variants [][]rune
 }
