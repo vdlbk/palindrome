@@ -4,39 +4,68 @@ import (
 	"fmt"
 	"palindrome/alphabet"
 	"palindrome/utils"
+	"strings"
+	"sync"
 	"time"
 )
 
 const (
-	StartingNumber     = 6_000_000_000_00
-	NumberOfPalindrome = 10_000_000_000_00
-	MidPoint           = 1000000
+	Base10 = 10
+	EndingNumber   = 1_000_000
 )
 
 func main() {
 	start := time.Now()
 
-	generatePalindromes(testPalindromicNumber, alphabet.SpanishAlphabet)
-	//generatePalindromes(testPalindromicNumber, alphabet.InternationalAlphabet)
+	generatePalindromes(EndingNumber, testPalindromicNumber, []alphabet.Alphabet{
+		alphabet.SpanishAlphabet,
+		alphabet.InternationalAlphabet,
+	})
 
 	fmt.Println("took", time.Since(start))
 }
 
-func testPalindromicNumber(number int, k int, alphabets [][]rune) bool {
-	return utils.IsBase10NumberAPalindromeInBaseK(number, k, alphabets)
+func testPalindromicNumber(number int, alphabet alphabet.Alphabet, waitGroup *sync.WaitGroup) bool {
+	defer waitGroup.Done()
+	return utils.IsBase10NumberAPalindromeInBaseK(number, alphabet)
 }
 
-func generatePalindromes(test func(number int, k int, alphabets [][]rune) bool, alphabet alphabet.Alphabet) {
-	for number := StartingNumber; number <= NumberOfPalindrome; number++ {
-		temp := number
-		reversedNumber := 0
-		for temp > 0 {
-			rem := temp % 10
-			temp = temp / 10
-			reversedNumber = (reversedNumber * 10) + rem
+func generatePalindromes(ending int, test func(int, alphabet.Alphabet, *sync.WaitGroup) bool, alphabets []alphabet.Alphabet) {
+	for _, alphabet := range alphabets {
+		variants := []string{}
+		for _, variant := range alphabet.Variants {
+			variants = append(variants, string(variant))
 		}
-		if number == reversedNumber {
-			go test(number, alphabet.K, alphabet.Variants)
+		fmt.Printf("%s: | `%s` |\n", alphabet.Name, strings.Join(variants, "` | `"))
+	}
+
+
+	// odd and even
+	waitGroup := sync.WaitGroup{}
+	for j := 0; j < 2; j++ {
+		i := 1
+		for number := createPalindrome(i, j%2 == 0); number < ending; number = createPalindrome(i, j%2 == 0) {
+			waitGroup.Add(len(alphabets))
+			for _, alphabet := range alphabets {
+				go test(number, alphabet, &waitGroup)
+			}
+			i++
 		}
 	}
+	waitGroup.Wait()
+}
+
+func createPalindrome(input int, isOdd bool) int {
+	n := input
+	palindrome := input
+
+	if isOdd {
+		n /= Base10
+	}
+
+	for n > 0 {
+		palindrome = (palindrome * Base10) + (n % Base10)
+		n /= Base10
+	}
+	return palindrome
 }
