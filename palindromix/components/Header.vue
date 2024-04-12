@@ -4,7 +4,7 @@
 
 <template>
   <header class="bg-zinc-950">
-    <nav class="flex items-center justify-center">
+    <nav class="flex items-center justify-center p-2 mb-8">
       <div>
         <NuxtImg
             src="/assets/img/druid.png"
