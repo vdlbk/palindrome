@@ -1,0 +1,9 @@
+@font-face {
+    font-family: 'Obelix';
+    font-style: normal;
+    src: url('assets/fonts/obelix-pro/ObelixPro-cyr.ttf') format('truetype');
+}
+
+.obelix {
+    font-family: 'Obelix';
+}
